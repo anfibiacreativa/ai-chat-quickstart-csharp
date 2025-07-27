@@ -405,4 +405,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 # AZD
-.[aA]zure/
+.[aA]zure/*.json
