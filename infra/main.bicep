@@ -76,6 +76,18 @@ resource openAiResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' exi
 
 var prefix = toLower('${name}-${resourceToken}')
 
+// Key Vault for storing secrets
+module keyVault 'core/security/keyvault.bicep' = {
+  name: 'keyvault'
+  scope: resourceGroup
+  params: {
+    name: '${replace(prefix, '-', '')}kv'
+    location: location
+    tags: tags
+    principalId: principalId
+  }
+}
+
 module openAi 'core/ai/cognitiveservices.bicep' = if (createAzureOpenAi) {
   name: 'openai'
   scope: openAiResourceGroup
@@ -169,6 +181,9 @@ module openAiRoleBackend 'core/security/role.bicep' = if (createAzureOpenAi) {
 }
 
 output AZURE_LOCATION string = location
+
+output AZURE_KEYVAULT_NAME string = keyVault.outputs.name
+output AZURE_KEYVAULT_URI string = keyVault.outputs.uri
 
 output AZURE_OPENAI_DEPLOYMENT string = openAiDeploymentName
 output AZURE_OPENAI_RESOURCE_LOCATION string = openAiResourceLocation

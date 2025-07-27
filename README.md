@@ -34,7 +34,24 @@ since the local app needs credentials for Azure OpenAI to work properly.
 
 ![Screenshot of the chat app](docs/screenshot_chatapp.png)
 
-## Architecture diagram
+## Prerequisites
+
+Before getting started with this template, ensure you have the following:
+
+* [.NET 8](https://dotnet.microsoft.com/downloads/) - Required for building and running the application
+* [Git](https://git-scm.com/downloads) - For cloning the repository
+* [Azure Developer CLI (azd)](https://aka.ms/install-azd) - For deploying to Azure
+* [Azure account](https://azure.microsoft.com/free/) with an active subscription
+* [VS Code](https://code.visualstudio.com/Download) or [Visual Studio](https://visualstudio.microsoft.com/downloads/) - For development
+  * If using VS Code, install the [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
+
+### Azure Permissions
+
+Your Azure account must have:
+* `Microsoft.Authorization/roleAssignments/write` permissions, such as [Role Based Access Control Administrator](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#role-based-access-control-administrator-preview), [User Access Administrator](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#user-access-administrator), or [Owner](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#owner)
+* `Microsoft.Resources/deployments/write` permissions on the subscription level
+
+## Architecture
 
 ![Architecture diagram: Azure Container Apps inside Container Apps Environment, connected to Container Registry with Container, connected to Managed Identity for Azure OpenAI](readme_diagram.png)
 
@@ -58,13 +75,7 @@ You can run this template virtually by using GitHub Codespaces. The button will 
 
 If you're not using one of the above options for opening the project, then you'll need to:
 
-1. Make sure the following tools are installed:
-
-    * [.NET 8](https://dotnet.microsoft.com/downloads/)
-    * [Git](https://git-scm.com/downloads)
-    * [Azure Developer CLI (azd)](https://aka.ms/install-azd)
-    * [VS Code](https://code.visualstudio.com/Download) or [Visual Studio](https://visualstudio.microsoft.com/downloads/)
-        * If using VS Code, install the [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
+1. Ensure you have all the [prerequisites](#prerequisites) installed.
 
 2. Download the project code:
 
@@ -97,10 +108,7 @@ Once you've opened the project in [Codespaces](#github-codespaces), in [Dev Cont
 ### Azure account setup
 
 1. Sign up for a [free Azure account](https://azure.microsoft.com/free/) and create an Azure Subscription.
-2. Check that you have the necessary permissions:
-
-    * Your Azure account must have `Microsoft.Authorization/roleAssignments/write` permissions, such as [Role Based Access Control Administrator](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#role-based-access-control-administrator-preview), [User Access Administrator](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#user-access-administrator), or [Owner](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#owner). If you don't have subscription-level permissions, you must be granted [RBAC](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#role-based-access-control-administrator-preview) for an existing resource group and [deploy to that existing group](/docs/deploy_existing.md#resource-group).
-    * Your Azure account also needs `Microsoft.Resources/deployments/write` permissions on the subscription level.
+2. Check that you have the necessary permissions as outlined in the [prerequisites](#prerequisites).
 
 ### Deploying with azd
 

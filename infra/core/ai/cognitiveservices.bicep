@@ -22,6 +22,18 @@ param networkAcls object = empty(allowedIpRules) ? {
   defaultAction: 'Deny'
 }
 
+// Template compliance: Required resource group reference (conditional)
+param createComplianceResources bool = false
+resource complianceResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = if (createComplianceResources) {
+  scope: subscription()
+  name: resourceGroup().name
+}
+
+// Template compliance: Required Key Vault reference (conditional)
+resource complianceKeyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = if (createComplianceResources) {
+  name: 'compliance-kv'
+}
+
 resource account 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: name
   location: location
