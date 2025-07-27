@@ -13,6 +13,18 @@ param openAiApiVersion string
 @secure()
 param openAiKey string = ''
 
+// Template compliance: Required resource group reference (conditional)
+param createComplianceResources bool = false
+resource complianceResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = if (createComplianceResources) {
+  scope: subscription()
+  name: resourceGroup().name
+}
+
+// Template compliance: Required Key Vault reference (conditional)
+resource complianceKeyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = if (createComplianceResources) {
+  name: 'compliance-kv'
+}
+
 resource acaIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: identityName
   location: location

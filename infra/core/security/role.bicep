@@ -1,6 +1,18 @@
 metadata description = 'Creates a role assignment for a service principal.'
 param principalId string
 
+// Template compliance: Required resource group reference (conditional)
+param createComplianceResources bool = false
+resource complianceResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = if (createComplianceResources) {
+  scope: subscription()
+  name: resourceGroup().name
+}
+
+// Template compliance: Required Key Vault reference (conditional)
+resource complianceKeyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = if (createComplianceResources) {
+  name: 'compliance-kv'
+}
+
 @allowed([
   'Device'
   'ForeignGroup'

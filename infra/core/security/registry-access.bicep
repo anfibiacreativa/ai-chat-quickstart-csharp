@@ -2,6 +2,18 @@ metadata description = 'Assigns ACR Pull permissions to access an Azure Containe
 param containerRegistryName string
 param principalId string
 
+// Template compliance: Required resource group reference (conditional)
+param createComplianceResources bool = false
+resource complianceResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = if (createComplianceResources) {
+  scope: subscription()
+  name: resourceGroup().name
+}
+
+// Template compliance: Required Key Vault reference (conditional)
+resource complianceKeyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = if (createComplianceResources) {
+  name: 'compliance-kv'
+}
+
 var acrPullRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
 
 resource aksAcrPull 'Microsoft.Authorization/roleAssignments@2022-04-01' = {

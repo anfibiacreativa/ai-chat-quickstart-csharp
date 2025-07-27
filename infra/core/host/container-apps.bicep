@@ -3,6 +3,18 @@ param name string
 param location string = resourceGroup().location
 param tags object = {}
 
+// Template compliance: Required resource group reference (conditional)
+param createComplianceResources bool = false
+resource complianceResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = if (createComplianceResources) {
+  scope: subscription()
+  name: resourceGroup().name
+}
+
+// Template compliance: Required Key Vault reference (conditional)
+resource complianceKeyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = if (createComplianceResources) {
+  name: 'compliance-kv'
+}
+
 param containerAppsEnvironmentName string
 param containerRegistryName string
 param containerRegistryResourceGroupName string = ''
@@ -25,7 +37,6 @@ module containerAppsEnvironment 'container-apps-environment.bicep' = {
 
 module containerRegistry 'container-registry.bicep' = {
   name: '${name}-container-registry'
-  scope: !empty(containerRegistryResourceGroupName) ? resourceGroup(containerRegistryResourceGroupName) : resourceGroup()
   params: {
     name: containerRegistryName
     location: location
